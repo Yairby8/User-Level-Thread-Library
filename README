@@ -1,0 +1,73 @@
+tomer_kadosh, yair.ben_yakar
+Tomer Kadosh (209460005), Yair Ben Yakar (319013090)
+EX: 2
+
+FILES:
+uthreads.cpp -- Implementation of a user-level threading library, including context switching, blocking,
+                sleeping, and scheduling.
+Makefile -- Builds the static library `libuthreads.a` using g++.
+README -- This file, explaining the implementation, compilation, and answers to part 1 questions.
+
+REMARKS:
+
+Code compiles with no warnings.
+No memory leaks and passing various tests.
+
+ANSWERS:
+
+Q1:
+
+(a) sigsetjmp(env, save_mask):
+saves the current register context (including PC and SP) into env.
+If save_mask is non‐zero, it also saves the current signal mask. It returns 0 immediately.
+
+(b) siglongjmp(env, val):
+restores the saved register context and signal mask from env, then causes
+sigsetjmp to return val (if val==0 it returns 1 instead). Thus it performs a non‐local jump plus
+signal‐mask restore.
+
+Q2:
+
+A simple chat client that needs to handle both user input (typing messages) and incoming network messages.
+With user‐level threads, we can create one thread to read keyboard input and another to listen for
+incoming data. The library scheduler switches between them quickly, allowing our program to handle input
+and network events “at the same time” without kernel threads or processes.
+
+Q3:
+
+Chrome’s per‑tab process vs. kernel thread:
+
+Advantages of separate processes:
+-Strong isolation: a crash in one tab can’t corrupt another.
+-Separate address spaces: better security boundaries.
+-Independent scheduling: the OS can balance CPU across tabs.
+
+Disadvantages:
+-Higher memory overhead per tab.
+-Inter‐process communication is more expensive than inter‐process threads.
+-Process creation and teardown causes more kernel work.
+
+Q4:
+
+Interrupts and signals when running kill pid:
+
+Keyboard to shell:
+pressing Enter generates a hardware interrupt, the OS reads the keystroke, and the shell sees your command.
+
+Shell to OS:
+when you type kill <pid>, the shell calls the kill() system call, sending SIGTERM (by default) to the target
+process.
+
+Delivery to the app:
+the kernel delivers the signal to the process’s signal handler (or the default action, terminate).
+Control flows from hardware interrupt -> OS -> shell -> kernel signal delivery -> application handler.
+
+Q5:
+
+Real vs. Virtual time:
+
+Real time (wall clock) measures actual elapsed time. Example: using sleep(2) pauses for about two seconds
+of wall‑clock time.
+Virtual time counts only CPU time consumed by your process.
+Example: setting an ITIMER_VIRTUAL timer triggers only when your code is actively running, so blocked or
+idle time doesn’t advance that timer.
