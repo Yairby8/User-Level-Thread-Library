@@ -1,7 +1,7 @@
 # 🧵 User-Level Threads Library
 
 ## Overview
-This project implements a static library in C for managing user-level threads with a customizable API. It provides thread creation, scheduling, blocking, and termination without relying on kernel threads, enabling efficient, lightweight concurrency.
+This project implements a static library in C++ for managing user-level threads with a customizable API. It provides thread creation, scheduling, blocking, and termination without relying on kernel threads, enabling efficient, lightweight concurrency.
 
 ## Features
 - Thread lifecycle management: create, run, block, resume, terminate.
@@ -12,7 +12,7 @@ This project implements a static library in C for managing user-level threads wi
 - Robust error handling and system call failure reporting.
 
 ## Skills & Concepts
-- C programming with low-level system interaction.
+- C++ programming with low-level system interaction.
 - Use of `sigsetjmp` and `siglongjmp` for context switching.
 - Signal handling and masking for race condition prevention.
 - Implementation of Round-Robin Scheduler.
